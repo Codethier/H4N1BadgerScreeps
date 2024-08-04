@@ -10,9 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/screeps": "^3.3.8"
+    "@types/screeps": "^3.3.8",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.7",
     "chokidar-cli": "^3.0.0",
     "vite": "^5.3.5"
   }
