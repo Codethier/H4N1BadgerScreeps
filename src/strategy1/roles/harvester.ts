@@ -1,5 +1,10 @@
-import {harvestNormal} from "../behaviours";
+import {harvestNormal, upgradeControllerNormal} from "../behaviours";
 
 export function harvesterRUN(creep: Creep) {
-    harvestNormal(creep)
+    if (harvestNormal(creep) === 'idle'){
+        upgradeControllerNormal(creep)
+    }
+    else {
+
+    }
 }

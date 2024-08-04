@@ -9,3 +9,6 @@ export function spawnBasicHarvester() {
     Game.spawns['Spawn1'].spawnCreep([WORK, CARRY, MOVE], newName,
         {memory: {role: 'harvester'}});
 }
+export function getClosestSource(creep:Creep){
+    return creep.pos.findClosestByPath(creep.room.find(FIND_SOURCES))
+}
