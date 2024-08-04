@@ -4,11 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "vite build",
+    "deploy": "npm run build && screeps-cli-deploy"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@types/screeps": "^3.3.8"
+  },
+  "devDependencies": {
+    "chokidar-cli": "^3.0.0",
+    "vite": "^5.3.5"
   }
 }
