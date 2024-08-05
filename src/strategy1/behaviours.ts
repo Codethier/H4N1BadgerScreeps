@@ -8,7 +8,6 @@ export function harvestNormal(creep: Creep) {
     if (creepStore === 'full cargo') {
         creep.memory.decision = 'storing'
     }
-
     if (creep.memory.decision === 'harvesting') {
         let closestSource = getClosestSource(creep)
         if (closestSource) {
@@ -20,6 +19,9 @@ export function harvestNormal(creep: Creep) {
             }
         }
     }
+}
+
+export function storeNormal(creep: Creep) {
     if (creep.memory.decision === 'storing') {
         let spawn = findClosestNotFullSpawn(creep)
         if (spawn) {
@@ -41,7 +43,10 @@ export function storeInClosestSpawn(creep: Creep) {
     if (creep.transfer(spawn, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
         creep.moveTo(spawn);
     }
-    if (creep.transfer(spawn, RESOURCE_ENERGY) === ERR_NOT_ENOUGH_RESOURCES || ERR_FULL) {
+    if (creep.transfer(spawn, RESOURCE_ENERGY) === ERR_FULL) {
+        creep.memory.decision = 'upgrading controller'
+    }
+    if (creep.transfer(spawn, RESOURCE_ENERGY) === ERR_NOT_ENOUGH_RESOURCES) {
         creep.memory.decision = undefined
     }
 
@@ -57,7 +62,24 @@ export function upgradeControllerNormal(creep: Creep) {
     }
 }
 
+// this handles building on not built spot, need to create a build spot before
 export function buildNormal(creep: Creep) {
     let creepStore = checkCargoCreep(creep)
+    if (creepStore === 'empty cargo') {
+        creep.memory.decision = undefined
+    }
+    // storing so it fall back to normal store
+    if (creep.memory.decision === 'storing') {
+        const target = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+        if (target) {
+            let buildAttempt = creep.build(target)
+            if (buildAttempt === ERR_NOT_IN_RANGE) {
+                creep.moveTo(target);
+            }
+            else if (buildAttempt === ERR_NOT_ENOUGH_RESOURCES) {
+                creep.memory.decision = undefined
+            }
+        }
+    }
 
 }

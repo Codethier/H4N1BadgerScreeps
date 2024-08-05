@@ -5,7 +5,6 @@ export function spawnBuilder() {
 }
 
 
-
 export function getClosestSource(creep: Creep) {
     return creep.pos.findClosestByPath(creep.room.find(FIND_SOURCES))
 }
@@ -22,5 +21,18 @@ export function checkCargoCreep(creep: Creep) {
         return 'full cargo'
     }
     return 'partial cargo'
+}
 
+export function tickSuicideIfIdle(creep: Creep) {
+    if (creep.memory.decision === undefined) {
+        if (creep.memory.suicideTicker === undefined) {
+            creep.memory.suicideTicker = 0
+        }
+        creep.memory.suicideTicker += 1
+        if (creep.memory.suicideTicker > 100) {
+            creep.suicide()
+        }
+    } else {
+        creep.memory.suicideTicker = 0
+    }
 }

@@ -8,6 +8,7 @@ declare global {
     interface CreepMemory {
         decision?: 'upgrading controller' | 'harvesting' | 'storing' | 'storing to spawn';
         role: 'harvester' | 'builder' | 'upgrader';
+        suicideTicker?: number;
     }
 
     interface FlagMemory {
@@ -27,6 +28,7 @@ declare global {
 export let constants = {
     harvestersTarget: 6,
     harvesterLevels: {
+        // base cost 50 + 50 / part
         lvl1: [WORK, CARRY,CARRY, MOVE,MOVE],
         lvl2: [WORK, WORK, CARRY, CARRY, MOVE, MOVE]
     },
@@ -38,6 +40,8 @@ export let constants = {
 }
 
 export function loop() {
+    // there should probably be miners, builders, carriers, and attack/defenders
+
     let harvesters = _.filter(Game.creeps, (creep: Creep) => creep.memory.role === 'harvester');
     if (harvesters.length < constants.harvestersTarget) {
         spawnHarvester()
