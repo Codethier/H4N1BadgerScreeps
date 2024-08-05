@@ -1,11 +1,12 @@
-import {spawnBasicHarvester} from "./utils";
 import {harvesterRUN} from "./roles/harvester";
 import _ = require("lodash");
+import {spawnBuilder, spawnHarvester,} from "./spawner";
 
 
 // this overwrites the default memory declaration in the package huh... useful for adding custom properties to packages
 declare global {
     interface CreepMemory {
+        decision?: 'upgrading controller' | 'harvesting' | 'storing' | 'storing to spawn';
         role: 'harvester' | 'builder' | 'upgrader';
     }
 
@@ -23,23 +24,29 @@ declare global {
 }
 
 
-let constants = {
-    harvestersTarget: 4,
-    harvesterLevels:{
-        lvl1: [WORK, CARRY, MOVE],
-        lvl2: [WORK,WORK,CARRY,CARRY,MOVE]
+export let constants = {
+    harvestersTarget: 6,
+    harvesterLevels: {
+        lvl1: [WORK, CARRY,CARRY, MOVE,MOVE],
+        lvl2: [WORK, WORK, CARRY, CARRY, MOVE, MOVE]
     },
     buildersTarget: 2,
+    builderLevels: {
+        lvl1: [WORK, CARRY,CARRY, MOVE,MOVE],
+        lvl2: [WORK, WORK, CARRY, CARRY, MOVE, MOVE]
+    }
 }
 
 export function loop() {
     let harvesters = _.filter(Game.creeps, (creep: Creep) => creep.memory.role === 'harvester');
-    console.log('Harvesters: ' + harvesters.length);
-
-
     if (harvesters.length < constants.harvestersTarget) {
-        spawnBasicHarvester()
+        spawnHarvester()
     }
+    let builders = _.filter(Game.creeps, (creep: Creep) => creep.memory.role === 'builder');
+    if (builders.length < constants.buildersTarget) {
+        spawnBuilder()
+    }
+
 
     // clear memory, because auto assign can overflow memory
     for (var name in Memory.creeps) {

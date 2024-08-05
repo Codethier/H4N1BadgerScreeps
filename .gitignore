@@ -1,9 +1,3 @@
-/node_modules/@types/screeps/index.d.ts
-/node_modules/@types/screeps/LICENSE
-/node_modules/@types/screeps/package.json
-/node_modules/@types/screeps/README.md
-/node_modules/.package-lock.json
-/node_modules/main.js
 /archive/
 /node_modules/
 .sync
