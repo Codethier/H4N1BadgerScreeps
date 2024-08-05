@@ -1,6 +1,7 @@
 import {harvesterRUN} from "./roles/harvester";
 import _ = require("lodash");
 import {spawnBuilder, spawnHarvester,} from "./spawner";
+import {builderRUN} from "./roles/builder";
 
 
 // this overwrites the default memory declaration in the package huh... useful for adding custom properties to packages
@@ -29,12 +30,12 @@ export let constants = {
     harvestersTarget: 6,
     harvesterLevels: {
         // base cost 50 + 50 / part
-        lvl1: [WORK, CARRY,CARRY, MOVE,MOVE],
+        lvl1: [WORK, CARRY, CARRY, MOVE, MOVE],
         lvl2: [WORK, WORK, CARRY, CARRY, MOVE, MOVE]
     },
     buildersTarget: 2,
     builderLevels: {
-        lvl1: [WORK, CARRY,CARRY, MOVE,MOVE],
+        lvl1: [WORK, CARRY, CARRY, MOVE, MOVE],
         lvl2: [WORK, WORK, CARRY, CARRY, MOVE, MOVE]
     }
 }
@@ -64,6 +65,8 @@ export function loop() {
     for (let creep in Game.creeps) {
         if (Game.creeps[creep].memory.role === 'harvester') {
             harvesterRUN(Game.creeps[creep])
+        } else if (Game.creeps[creep].memory.role === 'builder') {
+            builderRUN(Game.creeps[creep])
         }
     }
 }
